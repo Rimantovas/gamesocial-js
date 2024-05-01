@@ -1,5 +1,3 @@
-import "./errors";
-
 export const getCurrentHrefWithoutQueryParams = () => {
   // Create a new URL object based on window.location
   const url = new URL(window.location.href);
