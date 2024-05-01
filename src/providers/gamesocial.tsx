@@ -3,20 +3,20 @@ import { createContext, useCallback, useContext, useState } from "react";
 interface IConfig {
   devMode: boolean;
   apiKey: string;
-  userAuthToken: string;
+  userAuthToken: string | undefined;
 }
 
 type GamesocialState = {
   apiUrl: string;
   apiKey: string;
-  authToken: string;
-  setAuthToken: (token: string) => void;
+  authToken: string | undefined;
+  setAuthToken: (token: string | undefined) => void;
 };
 
 const context = createContext<GamesocialState>({
   apiUrl: "",
   apiKey: "",
-  authToken: "",
+  authToken: undefined,
   setAuthToken: () => {},
 });
 
@@ -44,7 +44,7 @@ export const useGamesocialState = (
   const [config, setConfig] = useState<IConfig>({
     devMode: devMode,
     apiKey: apiKey,
-    userAuthToken: "",
+    userAuthToken: undefined,
   });
 
   const apiUrl = config.devMode
@@ -53,7 +53,7 @@ export const useGamesocialState = (
 
   const authToken = config.userAuthToken;
 
-  const setAuthToken = useCallback((token: string) => {
+  const setAuthToken = useCallback((token: string | undefined) => {
     setConfig((prev) => ({
       ...prev,
       userAuthToken: token,
