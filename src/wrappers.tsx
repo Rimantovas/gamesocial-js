@@ -1,7 +1,8 @@
+import { GamesocialProvider } from "./providers/gamesocial";
 import { MissionsProvider } from "./providers/missions";
 import { ParticipantProvider } from "./providers/participant";
 
-export const GamesocialProvider = ({
+export const QuestsProvider = ({
   children,
   apiKey,
   devMode,

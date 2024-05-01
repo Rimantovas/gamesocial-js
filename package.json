@@ -1,7 +1,11 @@
 {
   "name": "gamesocial",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.1",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": [
+    "src/**/*"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.8.0",

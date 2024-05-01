@@ -1,8 +1,9 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { useApi } from "@/hooks/useApi";
 import { ThirdPartyProvider } from "../models/enums/third_party.enum";
 import { IParticipant } from "../models/interfaces/participant";
+import { useGamesocial } from "./gamesocial";
 
 type ParticipantState = {
   participant?: IParticipant;
@@ -40,16 +41,17 @@ export const useParticipantState = (
   errorCallback?: (error: any) => void
 ): ParticipantState => {
   const [participant, setParticipant] = useState<IParticipant>();
+  const { authToken } = useGamesocial();
 
   const api = useApi();
 
-  // useEffect(() => {
-  //   if (user.userData?.questsAccessToken) {
-  //     getParticipant();
-  //   } else {
-  //     setParticipant(undefined);
-  //   }
-  // }, [user.userData?.questsAccessToken]);
+  useEffect(() => {
+    if (authToken) {
+      getParticipant();
+    } else {
+      setParticipant(undefined);
+    }
+  }, [authToken]);
 
   const getParticipant = () => {
     api
