@@ -5,4 +5,5 @@ export enum TaskButtonType {
   PENDING = "PENDING", // If the task is pending
   COMPLETED = "COMPLETED", // If the task is completed
   FAILED = "FAILED", // If the task has failed
+  AUTH_REQUIRED = "AUTH_REQUIRED", // If task requires authentication first
 }

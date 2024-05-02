@@ -40,6 +40,7 @@ type Props = {
     comment: string | null | undefined;
   }) => React.ReactElement;
   callbacks: TaskCallbacks;
+  errorCallback?: (error: any) => void;
 };
 
 const TaskWrapperBase = (props: Props) => {
@@ -233,6 +234,10 @@ const TaskWrapperBase = (props: Props) => {
       return TaskButtonType.COMPLETED;
     }
 
+    if (!task.participation) {
+      return TaskButtonType.NO_PARTICIPANT;
+    }
+
     if (task.participation?.status === ParticipantTaskStatus.pending) {
       return TaskButtonType.PENDING;
     }
@@ -249,7 +254,7 @@ const TaskWrapperBase = (props: Props) => {
       return TaskButtonType.START;
     }
 
-    return TaskButtonType.NO_PARTICIPANT;
+    return TaskButtonType.AUTH_REQUIRED;
   };
   const noOnClick = () => {
     if (completed || maintenance || participationDisabled) {
@@ -273,12 +278,13 @@ const TaskWrapperBase = (props: Props) => {
 };
 
 const TaskWrapper = (props: Props) => {
-  const { task, participationDisabled, maintenance, completed } = props;
+  const { task, participationDisabled, maintenance, completed, errorCallback } =
+    props;
   return (
-    <TaskProvider>
-      <DiscordProvider>
-        <TwitterProvider>
-          <TelegramProvider>
+    <TaskProvider errorCallback={errorCallback}>
+      <DiscordProvider errorCallback={errorCallback}>
+        <TwitterProvider errorCallback={errorCallback}>
+          <TelegramProvider errorCallback={errorCallback}>
             <TaskWrapperBase
               task={task}
               participationDisabled={participationDisabled}
