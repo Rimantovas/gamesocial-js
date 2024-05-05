@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from "react";
 import { useApi } from "@/hooks/useApi";
 import { ParticipantTaskStatus } from "@/models/enums/participants.enum";
 import { ITask } from "@/models/interfaces/task";
-import { errorMessages } from "@/utils/errors";
+import { errorMessages, shouldRefetchParticipant } from "@/utils/errors";
 import { useMissions } from "./missions";
 import { useParticipant } from "./participant";
 
@@ -39,7 +39,7 @@ export const useTaskState = (
   const [isParticipationLoading, setIsParticipationLoading] =
     useState<boolean>(false);
   const { updateTaskStatus } = useMissions();
-  const { addPoints } = useParticipant();
+  const { addPoints, getParticipant } = useParticipant();
   const api = useApi();
 
   const handleError = (e: any) => {
@@ -58,6 +58,11 @@ export const useTaskState = (
       errorCallback && errorCallback("Server error, please try again later");
     } else {
       if (message in errorMessages) {
+        const s = shouldRefetchParticipant(message);
+        if (s) {
+          // TODO Maybe await this
+          getParticipant();
+        }
         errorCallback && errorCallback(errorMessages[message]);
       } else {
         errorCallback && errorCallback(message);

@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
 interface IConfig {
-  devMode: boolean;
+  apiUrl: string;
   apiKey: string;
   userAuthToken: string | undefined;
 }
@@ -26,30 +26,26 @@ export function GamesocialProvider({
   children,
   state,
   apiKey,
-  devMode,
+  apiUrl,
 }: {
   children: any;
   state?: GamesocialState;
   apiKey: string;
-  devMode?: boolean;
+  apiUrl: string;
 }) {
-  state ??= useGamesocialState(apiKey, devMode || false);
+  state ??= useGamesocialState(apiKey, apiUrl);
   return <context.Provider value={state}>{children}</context.Provider>;
 }
 
 export const useGamesocialState = (
   apiKey: string,
-  devMode: boolean
+  apiUrl: string
 ): GamesocialState => {
   const [config, setConfig] = useState<IConfig>({
-    devMode: devMode,
+    apiUrl: apiUrl,
     apiKey: apiKey,
     userAuthToken: undefined,
   });
-
-  const apiUrl = config.devMode
-    ? "https://qtwebapi.cosmicops.com/"
-    : "https://quest-api.gamestarter.com/";
 
   const authToken = config.userAuthToken;
 

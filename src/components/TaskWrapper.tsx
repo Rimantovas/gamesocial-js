@@ -1,5 +1,5 @@
 import { ParticipantTaskStatus } from "@/models/enums/participants.enum";
-import { TaskButtonType } from "@/models/enums/task_button_type";
+import { TaskButtonType } from "@/models/enums/task_button_type.enum";
 import { TaskType } from "@/models/enums/tasks.enum";
 import {
   IDiscordJoinMetadata,
@@ -15,11 +15,13 @@ import {
   IYoutubeViewMetadata,
 } from "@/models/interfaces/task";
 import { TaskProvider, useTask } from "@/providers/task";
-import { DiscordProvider, useDiscord } from "@/providers/tasks/discord";
-import { TelegramProvider, useTelegram } from "@/providers/tasks/telegram";
-import { TwitterProvider, useTwitter } from "@/providers/tasks/twitter";
+import {
+  ThirdPartyAuthProvider,
+  useThirdPartyAuth,
+} from "@/providers/third_party_auth";
 
 import { useState } from "react";
+import { ThirdPartyProvider } from "..";
 
 interface TaskCallbacks {
   onYoutubeView: (task: ITask, videoId: string) => Promise<number>;
@@ -54,14 +56,9 @@ const TaskWrapperBase = (props: Props) => {
   } = props;
   const [linkClicked, setLinkClicked] = useState<boolean>(false);
 
-  //   const { openFileUploadModal, openYoutubeModal, openSubmitStringModal } =
-  //     useModal();
-
   const { participate, isParticipationLoading } = useTask();
 
-  const discord = useDiscord();
-  const twitter = useTwitter();
-  const telegram = useTelegram();
+  const thirdPartyAuth = useThirdPartyAuth();
 
   const onLinkClick = async () => {
     switch (task.type) {
@@ -150,44 +147,18 @@ const TaskWrapperBase = (props: Props) => {
     switch (task.type) {
       case TaskType.discord_connect:
       case TaskType.discord_join:
-        return discord.isAuthenticated;
+        return thirdPartyAuth.isAuthenticated(ThirdPartyProvider.discord);
       case TaskType.twitter_connect:
       case TaskType.twitter_follow:
       case TaskType.twitter_like:
       case TaskType.twitter_reply:
       case TaskType.twitter_repost:
-        return twitter.isAuthenticated;
+        return thirdPartyAuth.isAuthenticated(ThirdPartyProvider.twitter);
       case TaskType.telegram_connect:
       case TaskType.telegram_join:
-        return telegram.isAuthenticated;
-      case TaskType.manual:
-      case TaskType.image_upload:
-      case TaskType.youtube_view:
-      case TaskType.submit_string:
-      case TaskType.daily_login:
-      case TaskType.twitter_activity:
-      case TaskType.open_url:
-      case TaskType.youtube_subscribe:
-      case TaskType.twitch_follow:
+        return thirdPartyAuth.isAuthenticated(ThirdPartyProvider.telegram);
+      default:
         return true;
-    }
-  };
-
-  const isLoading = () => {
-    switch (task.type) {
-      case TaskType.discord_connect:
-      case TaskType.discord_join:
-        return discord.isLoading;
-      case TaskType.twitter_connect:
-      case TaskType.twitter_activity:
-      case TaskType.twitter_follow:
-      case TaskType.twitter_like:
-      case TaskType.twitter_reply:
-      case TaskType.twitter_repost:
-        return twitter.isLoading;
-      case TaskType.telegram_connect:
-      case TaskType.telegram_join:
-        return telegram.isLoading;
     }
   };
 
@@ -195,16 +166,16 @@ const TaskWrapperBase = (props: Props) => {
     switch (task.type) {
       case TaskType.discord_connect:
       case TaskType.discord_join:
-        return discord.authenticate();
+        return thirdPartyAuth.authenticate(ThirdPartyProvider.discord);
       case TaskType.twitter_connect:
       case TaskType.twitter_follow:
       case TaskType.twitter_like:
       case TaskType.twitter_reply:
       case TaskType.twitter_repost:
-        return twitter.authenticate();
+        return thirdPartyAuth.authenticate(ThirdPartyProvider.twitter);
       case TaskType.telegram_connect:
       case TaskType.telegram_join:
-        return telegram.authenticate();
+        return thirdPartyAuth.authenticate(ThirdPartyProvider.telegram);
     }
   };
 
@@ -271,7 +242,7 @@ const TaskWrapperBase = (props: Props) => {
   return children({
     onClick: !noOnClick() ? handleClick : undefined,
     type: getType(),
-    isLoading: isLoading() || isParticipationLoading,
+    isLoading: thirdPartyAuth.isLoading || isParticipationLoading,
     disabled: participationDisabled || maintenance,
     comment: task.participation?.comment,
   });
@@ -282,21 +253,17 @@ const TaskWrapper = (props: Props) => {
     props;
   return (
     <TaskProvider errorCallback={errorCallback}>
-      <DiscordProvider errorCallback={errorCallback}>
-        <TwitterProvider errorCallback={errorCallback}>
-          <TelegramProvider errorCallback={errorCallback}>
-            <TaskWrapperBase
-              task={task}
-              participationDisabled={participationDisabled}
-              maintenance={maintenance}
-              completed={completed || false}
-              callbacks={props.callbacks}
-            >
-              {props.children}
-            </TaskWrapperBase>
-          </TelegramProvider>
-        </TwitterProvider>
-      </DiscordProvider>
+      <ThirdPartyAuthProvider errorCallback={errorCallback}>
+        <TaskWrapperBase
+          task={task}
+          participationDisabled={participationDisabled}
+          maintenance={maintenance}
+          completed={completed || false}
+          callbacks={props.callbacks}
+        >
+          {props.children}
+        </TaskWrapperBase>
+      </ThirdPartyAuthProvider>
     </TaskProvider>
   );
 };

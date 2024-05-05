@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { TaskType } from "..";
 import { useGamesocial } from "./gamesocial";
 
 type MissionsState = {
@@ -60,7 +61,7 @@ export const useMissionsState = (): MissionsState => {
   }, [missions]);
 
   useEffect(() => {
-    if (authToken.length === 0) {
+    if (authToken && authToken.length === 0) {
       setMaintenance(true);
     }
   }, [authToken]);
@@ -84,15 +85,15 @@ export const useMissionsState = (): MissionsState => {
     const promises = missionIds.map((id) => api.get(`missions/${id}/tasks`));
     Promise.all(promises)
       .then(function (responses) {
-        const tasks = responses.map((r) => r.data).flat();
+        const validTypes = new Set(Object.values(TaskType));
+        const tasks = responses
+          .map((r) => r.data)
+          .flat()
+          .filter((t) => validTypes.has(t.type));
         setTasks(tasks);
       })
       .catch(function () {
         setMaintenance(true);
-      })
-
-      .finally(function () {
-        // always executed
       });
   };
 

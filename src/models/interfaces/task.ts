@@ -1,5 +1,5 @@
 import { ParticipantTaskStatus } from "../enums/participants.enum";
-import { TaskValidation } from "../enums/task_validation";
+import { TaskValidation } from "../enums/task_validation.enum";
 import { TaskType } from "../enums/tasks.enum";
 
 export interface ITask {
@@ -32,8 +32,6 @@ export interface ITask {
 export interface BaseMetadata {
   primary?: boolean;
   image?: string;
-  check_nft?: boolean;
-  count_invites?: boolean;
   identifier?: string;
 }
 
