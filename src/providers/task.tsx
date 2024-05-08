@@ -104,7 +104,7 @@ export const useTaskState = (
           response.data.status === ParticipantTaskStatus.completed &&
           task.points_reward
         ) {
-          addPoints(task.points_reward);
+          addPoints(task);
         }
         if (callback) {
           callback();

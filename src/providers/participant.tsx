@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { useApi } from "@/hooks/useApi";
+import { TaskRewardType } from "@/models/enums/task_reward_type.enum";
+import { ITask } from "@/models/interfaces/task";
 import { ThirdPartyProvider } from "../models/enums/third_party.enum";
 import { IParticipant } from "../models/interfaces/participant";
 import { useGamesocial } from "./gamesocial";
@@ -8,9 +10,8 @@ import { useGamesocial } from "./gamesocial";
 type ParticipantState = {
   participant?: IParticipant;
   isThirdPartyAuthenticated: (thirdParty: ThirdPartyProvider) => boolean;
-  addPoints: (points: number) => void;
+  addPoints: (task: ITask) => void;
   getParticipant: () => void;
-  setParticipant: (participant: IParticipant | undefined) => void;
 };
 
 const context = createContext<ParticipantState>({
@@ -18,7 +19,6 @@ const context = createContext<ParticipantState>({
   isThirdPartyAuthenticated: () => false,
   addPoints: () => {},
   getParticipant: () => {},
-  setParticipant: () => {},
 });
 
 export const useParticipant = () => useContext(context);
@@ -71,10 +71,31 @@ export const useParticipantState = (
     return !!participant?.authenticated.includes(thirdParty);
   };
 
-  const addPoints = (p: number) => {
+  const addPoints = (task: ITask) => {
+    if (!task.points_reward) return;
+
     setParticipant((prev) => {
       if (!prev) return undefined;
-      return { ...prev, points: prev?.points + p };
+      if (task.reward_type === TaskRewardType.points) {
+        const points = Math.floor(
+          task.points_reward! * (participant?.points_multiplier ?? 1)
+        );
+        setParticipant((prev) => {
+          if (!prev) return undefined;
+          return {
+            ...prev,
+            points: prev?.points + points,
+          };
+        });
+      } else {
+        setParticipant((prev) => {
+          if (!prev) return undefined;
+          return {
+            ...prev,
+            points_multiplier: prev?.points_multiplier + task.points_reward!,
+          };
+        });
+      }
     });
   };
 
@@ -83,6 +104,5 @@ export const useParticipantState = (
     isThirdPartyAuthenticated,
     addPoints,
     getParticipant,
-    setParticipant,
   };
 };

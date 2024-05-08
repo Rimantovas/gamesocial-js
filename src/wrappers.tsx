@@ -5,16 +5,16 @@ import { ParticipantProvider } from "./providers/participant";
 export const QuestsProvider = ({
   children,
   apiKey,
-  devMode,
+  apiUrl,
   errorCallback,
 }: {
   children: any;
   apiKey: string;
-  devMode?: boolean;
+  apiUrl: string;
   errorCallback?: (error: any) => void;
 }) => {
   return (
-    <GamesocialProvider apiKey={apiKey} devMode={devMode}>
+    <GamesocialProvider apiKey={apiKey} apiUrl={apiUrl}>
       <ParticipantProvider errorCallback={errorCallback}>
         <MissionsProvider>{children}</MissionsProvider>
       </ParticipantProvider>

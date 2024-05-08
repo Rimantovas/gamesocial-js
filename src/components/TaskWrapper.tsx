@@ -33,7 +33,6 @@ type Props = {
   task: ITask;
   participationDisabled: boolean;
   maintenance: boolean;
-  completed: boolean;
   children: (props: {
     onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     type: TaskButtonType;
@@ -43,6 +42,7 @@ type Props = {
   }) => React.ReactElement;
   callbacks: TaskCallbacks;
   errorCallback?: (error: any) => void;
+  onSuccess?: () => void;
 };
 
 const TaskWrapperBase = (props: Props) => {
@@ -50,15 +50,19 @@ const TaskWrapperBase = (props: Props) => {
     task,
     participationDisabled,
     maintenance,
-    completed,
     children,
     callbacks,
+    onSuccess,
   } = props;
   const [linkClicked, setLinkClicked] = useState<boolean>(false);
 
   const { participate, isParticipationLoading } = useTask();
 
   const thirdPartyAuth = useThirdPartyAuth();
+
+  const completed =
+    task.participation &&
+    task.participation.status === ParticipantTaskStatus.completed;
 
   const onLinkClick = async () => {
     switch (task.type) {
@@ -180,7 +184,7 @@ const TaskWrapperBase = (props: Props) => {
   };
 
   const onParticipate = async (body?: any) => {
-    const resp = await participate(task, body);
+    const resp = await participate(task, body, onSuccess);
     if (!resp) {
       setLinkClicked(false);
     }
@@ -227,6 +231,7 @@ const TaskWrapperBase = (props: Props) => {
 
     return TaskButtonType.AUTH_REQUIRED;
   };
+
   const noOnClick = () => {
     if (completed || maintenance || participationDisabled) {
       return true;
@@ -239,6 +244,7 @@ const TaskWrapperBase = (props: Props) => {
     }
     return false;
   };
+
   return children({
     onClick: !noOnClick() ? handleClick : undefined,
     type: getType(),
@@ -249,7 +255,7 @@ const TaskWrapperBase = (props: Props) => {
 };
 
 const TaskWrapper = (props: Props) => {
-  const { task, participationDisabled, maintenance, completed, errorCallback } =
+  const { task, participationDisabled, maintenance, errorCallback, onSuccess } =
     props;
   return (
     <TaskProvider errorCallback={errorCallback}>
@@ -258,8 +264,8 @@ const TaskWrapper = (props: Props) => {
           task={task}
           participationDisabled={participationDisabled}
           maintenance={maintenance}
-          completed={completed || false}
           callbacks={props.callbacks}
+          onSuccess={onSuccess}
         >
           {props.children}
         </TaskWrapperBase>

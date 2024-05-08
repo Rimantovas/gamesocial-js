@@ -1,6 +1,6 @@
-import { MissionRewardType, MissionType } from '../enums/missions.enum';
-import { ParticipantMissionStatus } from '../enums/participants.enum';
-import { ISocials } from './socials';
+import { MissionRewardType, MissionType } from "../enums/missions.enum";
+import { ParticipantMissionStatus } from "../enums/participants.enum";
+import { ISocials } from "./socials";
 
 export interface IMission {
   id: string;

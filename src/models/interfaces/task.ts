@@ -1,20 +1,27 @@
 import { ParticipantTaskStatus } from "../enums/participants.enum";
+import { TaskRewardType } from "../enums/task_reward_type.enum";
 import { TaskValidation } from "../enums/task_validation.enum";
 import { TaskType } from "../enums/tasks.enum";
 
 export interface ITask {
+  pid?: number;
   id: string;
   mission_id: string;
   title: string;
-  info: string;
-  description: string;
+  info?: string;
+  description?: string;
   points_reward?: number;
   repetitive: boolean;
   coming_soon: boolean;
+  reward_type: TaskRewardType;
+  daily: boolean;
+  content?: string;
+
   metadata:
     | BaseMetadata
     | IDiscordJoinMetadata
     | ISubmitStringMetadata
+    | ITwitterReplyMetadata
     | ITwitterLikeMetadata
     | ITwitterRepostMetadata
     | ITwitterFollowMetadata
@@ -24,7 +31,8 @@ export interface ITask {
     | IManualMetadata
     | IOpenUrlMetadata
     | IYoutubeSubscribeMetadata
-    | ITwitchFollowMetadata;
+    | ITwitchFollowMetadata
+    | ITwitterActivityMetadata;
   type: TaskType;
   participation?: IParticipation;
 }
