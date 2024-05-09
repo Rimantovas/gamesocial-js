@@ -158,7 +158,44 @@ export default ParticipantInfo;
 
 ## TaskWrapper
 
-This is the main component. It is used for interaction with tasks. Wrap the `TaskWrapper` component around each task UI. Here is an example:
+This is the main component. It is used for interaction with tasks. Wrap the `TaskWrapper` component around each task UI.
+
+### Props
+
+1. **task (ITask):**
+   The task object representing the specific task being wrapped.
+2. **participationDisabled (boolean):**
+   A flag indicating whether task participation is disabled. Usually use the mission's `ends_at` field to check if the participation is available.
+3. **maintenance (boolean):**
+   A flag indicating whether the system is currently under maintenance. You should use the maintenance flag from useMissions unless you want some custom implementation.
+   4, **callbacks (TaskCallbacks):**
+   An object containing callback functions for specific task actions, such as viewing a YouTube video or uploading a file.
+4. **errorCallback ((error: any) => void):**
+   An optional callback function to handle errors that occur during task interaction.
+5. **onSuccess (() => void):**
+   An optional callback function called upon successful completion of a task.
+
+### Below are explanations for all of the variables in children:
+
+1. **onClick ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void | undefined):**
+   A function to handle clicks on the task link, typically triggering participation in the task.
+2. **type (TaskButtonType):**
+   This variable represents the type of button to be displayed in the child component, based on the task's participation status and user authentication status. Possible values include:
+   - `NO_PARTICIPANT`: If not participant is found. Usually that means the user is not authenticated.
+   - `START`: Indicates that the user can start the task.
+   - `CLAIM`: Indicates that the user can claim he completed the task. This state comes after `START`.
+   - `PENDING`: Indicates that the participation in the task is pending. Usually if the the task has to be manually approved.
+   - `COMPLETED`: Indicates that the task has been completed.
+   - `FAILED`: Indicates that the participation in the task has failed.
+   - `AUTH_REQUIRED`: Indicates that 3rd party authentication is required to participate in the task. On click will take the the user to required OAuth screen.
+3. **isLoading (boolean):**
+   This variable indicates whether the child component is currently in a loading state.
+4. **disabled (boolean):**
+   This variable indicates whether the child component should be disabled. It is true if task participation is disabled, the system is under maintenance, or the task has been completed.
+5. **comment (string | null | undefined):**
+   Is only available if the the type is `FAILED`. Returns the error comment.
+
+### Example
 
 ```js
 import React from "react";
@@ -186,14 +223,3 @@ function TaskCard({ task }: { task: ITask }) {
 
 export default TaskCard;
 ```
-
-Below are explanations for all of the variables:
-
-1. **onClick ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void | undefined):**
-   An object representing the participant, containing details like their points and authentication status.
-2. **type (TaskButtonType):**
-   A function that checks if the participant is authenticated with a specified 3rd party provider. Check `ThirdPartyProvider` enum to find all supported 3rd party providers
-3. **isLoading (boolean):**
-   Add points to participant's score (only adds to local state)
-4. **getParticipant (() => void):**
-   A function that fetches the participant's data from the server. (initial fetch is handles automatically, use this if you want refresh state)
