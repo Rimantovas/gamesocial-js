@@ -23,6 +23,7 @@ export interface IMission {
   reward_available_from: string;
   reward_available_to: string;
   participation?: IMissionParticipation;
+  settings?: any;
 }
 
 export interface IMissionParticipation {

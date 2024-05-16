@@ -6,4 +6,5 @@ export enum TaskButtonType {
   COMPLETED = "COMPLETED", // If the task is completed
   FAILED = "FAILED", // If the task has failed
   AUTH_REQUIRED = "AUTH_REQUIRED", // If task requires authentication first
+  CONFIRM_CAPTCHA = "CONFIRM_CAPTCHA", // If task requires captcha confirmation
 }

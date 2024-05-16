@@ -14,6 +14,7 @@ import {
   IYoutubeSubscribeMetadata,
   IYoutubeViewMetadata,
 } from "@/models/interfaces/task";
+import { useMissions } from "@/providers/missions";
 import { TaskProvider, useTask } from "@/providers/task";
 import {
   ThirdPartyAuthProvider,
@@ -27,6 +28,7 @@ interface TaskCallbacks {
   onYoutubeView: (task: ITask, videoId: string) => Promise<number>;
   onFileUpload: (task: ITask) => Promise<string>;
   onSubmitString: (task: ITask) => Promise<string>;
+  onRecaptchaConfirm: (task: ITask) => Promise<string>;
 }
 
 type Props = {
@@ -58,7 +60,11 @@ const TaskWrapperBase = (props: Props) => {
 
   const { participate, isParticipationLoading } = useTask();
 
+  const { missions } = useMissions();
+
   const thirdPartyAuth = useThirdPartyAuth();
+
+  const mission = missions.find((m) => m.id === task.mission_id);
 
   const completed =
     task.participation &&
@@ -190,7 +196,7 @@ const TaskWrapperBase = (props: Props) => {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (participationDisabled || maintenance || completed) {
       return undefined;
     }
@@ -198,7 +204,14 @@ const TaskWrapperBase = (props: Props) => {
     if (!isAuthenticated()) {
       authenticate();
     } else if (linkClicked) {
-      onParticipate();
+      if (getType() === TaskButtonType.CONFIRM_CAPTCHA) {
+        const token = await callbacks.onRecaptchaConfirm(task);
+        await onParticipate({
+          token,
+        });
+      } else {
+        await onParticipate();
+      }
     } else {
       onLinkClick();
     }
@@ -222,6 +235,9 @@ const TaskWrapperBase = (props: Props) => {
     }
 
     if (linkClicked) {
+      if (task.metadata.captcha && mission?.settings?.recaptcha_site_key) {
+        return TaskButtonType.CONFIRM_CAPTCHA;
+      }
       return TaskButtonType.CLAIM;
     }
 

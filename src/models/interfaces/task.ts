@@ -41,6 +41,7 @@ export interface BaseMetadata {
   primary?: boolean;
   image?: string;
   identifier?: string;
+  captcha?: boolean;
 }
 
 export interface IParticipation {
