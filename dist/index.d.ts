@@ -135,6 +135,28 @@ interface ITwitchFollowMetadata extends BaseMetadata {
     twitch_url: string;
 }
 
+interface TaskCallbacks {
+    onYoutubeView: (task: ITask, videoId: string) => Promise<number>;
+    onFileUpload: (task: ITask) => Promise<string>;
+    onSubmitString: (task: ITask) => Promise<string>;
+}
+type Props = {
+    task: ITask;
+    participationDisabled: boolean;
+    maintenance: boolean;
+    children: (props: {
+        onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+        type: TaskButtonType;
+        isLoading?: boolean;
+        disabled?: boolean;
+        comment: string | null | undefined;
+    }) => React.ReactElement;
+    callbacks: TaskCallbacks;
+    errorCallback?: (error: any) => void;
+    onSuccess?: () => void;
+};
+declare const TaskWrapper: (props: Props) => react.JSX.Element;
+
 declare enum MissionType {
     guaranteed = "guaranteed",
     scoreboard = "scoreboard",
@@ -294,4 +316,4 @@ declare const QuestsProvider: ({ children, apiKey, apiUrl, errorCallback, }: {
     errorCallback?: (error: any) => void;
 }) => react.JSX.Element;
 
-export { type BaseMetadata, type ErrorMessages, GamesocialProvider, type ICryptoRewardMetadata, type IDiscordJoinMetadata, type IImageUploadMetadata, type IManualMetadata, type IMission, type IMissionParticipation, type IMissionReward, type IOpenUrlMetadata, type IParticipant, type IParticipantTask, type IParticipation, type IPointsRewardMetadata, type ISubmitStringMetadata, type ITask, type ITelegramJoinMetadata, type ITwitchFollowMetadata, type ITwitterActivityMetadata, type ITwitterFollowMetadata, type ITwitterLikeMetadata, type ITwitterReplyMetadata, type ITwitterRepostMetadata, type IYoutubeSubscribeMetadata, type IYoutubeViewMetadata, MissionRewardType, MissionType, MissionsProvider, ParticipantMissionStatus, ParticipantProvider, ParticipantTaskStatus, QuestWebhookType, QuestsProvider, TaskButtonType, TaskProvider, TaskRewardType, TaskType, TaskValidation, ThirdPartyProvider, errorMessages, getCurrentHrefWithoutQueryParams, shouldRefetchParticipant, useGamesocial, useGamesocialState, useMissions, useMissionsState, useParticipant, useParticipantState, useTask, useTaskState };
+export { type BaseMetadata, type ErrorMessages, GamesocialProvider, type ICryptoRewardMetadata, type IDiscordJoinMetadata, type IImageUploadMetadata, type IManualMetadata, type IMission, type IMissionParticipation, type IMissionReward, type IOpenUrlMetadata, type IParticipant, type IParticipantTask, type IParticipation, type IPointsRewardMetadata, type ISubmitStringMetadata, type ITask, type ITelegramJoinMetadata, type ITwitchFollowMetadata, type ITwitterActivityMetadata, type ITwitterFollowMetadata, type ITwitterLikeMetadata, type ITwitterReplyMetadata, type ITwitterRepostMetadata, type IYoutubeSubscribeMetadata, type IYoutubeViewMetadata, MissionRewardType, MissionType, MissionsProvider, ParticipantMissionStatus, ParticipantProvider, ParticipantTaskStatus, QuestWebhookType, QuestsProvider, TaskButtonType, TaskProvider, TaskRewardType, TaskType, TaskValidation, TaskWrapper, ThirdPartyProvider, errorMessages, getCurrentHrefWithoutQueryParams, shouldRefetchParticipant, useGamesocial, useGamesocialState, useMissions, useMissionsState, useParticipant, useParticipantState, useTask, useTaskState };

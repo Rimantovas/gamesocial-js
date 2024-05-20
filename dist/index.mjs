@@ -490,9 +490,263 @@ var context5 = createContext5({
   authenticate: () => ({}),
   isAuthenticated: () => false
 });
+var useThirdPartyAuth = () => useContext5(context5);
+function ThirdPartyAuthProvider({
+  children,
+  state,
+  errorCallback
+}) {
+  state != null ? state : state = useThirdPartyAuthState(errorCallback);
+  return /* @__PURE__ */ React.createElement(context5.Provider, { value: state }, children);
+}
+var useThirdPartyAuthState = (errorCallback) => {
+  const [authenticated, setAuthenticated] = useState6(
+    defaultProviderStatus
+  );
+  const [isLoading, setIsLoading] = useState6(false);
+  const { participant } = useParticipant();
+  const api = useApi();
+  useEffect4(() => {
+    const newStatus = Object.fromEntries(
+      Object.values(ThirdPartyProvider).map((provider) => [
+        provider,
+        !!(participant == null ? void 0 : participant.authenticated.includes(provider))
+      ])
+    );
+    setAuthenticated(newStatus);
+  }, [participant]);
+  const isAuthenticated = (provider) => {
+    return authenticated[provider] || false;
+  };
+  const authenticate = (provider) => {
+    setIsLoading(true);
+    api.get(`auth/${provider}`, {
+      params: {
+        redirect_url: getCurrentHrefWithoutQueryParams()
+      }
+    }).then(function(response) {
+      if (response.data.url) {
+        if (response.data.url.includes("?error=")) {
+          throw new Error(
+            "Failed to authenticate with ThirdPartyAuth: " + response.data.url.split("?error=")[1]
+          );
+        }
+        window.location.href = response.data.url;
+      }
+    }).catch(function(error) {
+      console.error(error);
+      errorCallback && errorCallback(error);
+    }).finally(() => {
+      setIsLoading(false);
+    });
+  };
+  return {
+    isLoading,
+    authenticated,
+    authenticate,
+    isAuthenticated
+  };
+};
 
 // src/components/TaskWrapper.tsx
 import { useState as useState7 } from "react";
+var TaskWrapperBase = (props) => {
+  var _a;
+  const {
+    task,
+    participationDisabled,
+    maintenance,
+    children,
+    callbacks,
+    onSuccess
+  } = props;
+  const [linkClicked, setLinkClicked] = useState7(false);
+  const { participate, isParticipationLoading } = useTask();
+  const thirdPartyAuth = useThirdPartyAuth();
+  const completed = task.participation && task.participation.status === "completed" /* completed */;
+  const onLinkClick = () => __async(void 0, null, function* () {
+    switch (task.type) {
+      case "discord_join" /* discord_join */:
+        window.open(
+          task.metadata.invite_url,
+          "_blank"
+        );
+        break;
+      case "twitter_follow" /* twitter_follow */:
+        window.open(
+          `https://twitter.com/intent/follow?screen_name=${task.metadata.username}`,
+          "_blank"
+        );
+        break;
+      case "twitter_like" /* twitter_like */:
+        window.open(task.metadata.post_url, "_blank");
+        break;
+      case "twitter_reply" /* twitter_reply */:
+        window.open(
+          task.metadata.post_url,
+          "_blank"
+        );
+        break;
+      case "twitter_repost" /* twitter_repost */:
+        window.open(
+          `https://twitter.com/intent/retweet?tweet_id=${task.metadata.post_id}`,
+          "_blank"
+        );
+        break;
+      case "telegram_join" /* telegram_join */:
+        window.open(
+          `https://t.me/${task.metadata.username}`,
+          "_blank"
+        );
+        break;
+      case "image_upload" /* image_upload */:
+        const file = yield callbacks.onFileUpload(task);
+        onParticipate({
+          file
+        });
+        return;
+      case "submit_string" /* submit_string */:
+        const value = yield callbacks.onSubmitString(task);
+        onParticipate({
+          value
+        });
+        return;
+      case "open_url" /* open_url */:
+        window.open(task.metadata.url, "_blank");
+        break;
+      case "youtube_view" /* youtube_view */:
+        const secondsWatched = yield callbacks.onYoutubeView(
+          task,
+          task.metadata.video_id
+        );
+        onParticipate({
+          seconds: secondsWatched
+        });
+        return;
+      case "daily_login" /* daily_login */:
+        onParticipate();
+        return;
+      case "twitch_follow" /* twitch_follow */:
+        window.open(
+          task.metadata.twitch_url,
+          "_blank"
+        );
+        break;
+      case "youtube_subscribe" /* youtube_subscribe */:
+        window.open(
+          task.metadata.channel_url,
+          "_blank"
+        );
+        break;
+    }
+    setLinkClicked(true);
+  });
+  const isAuthenticated = () => {
+    switch (task.type) {
+      case "discord_connect" /* discord_connect */:
+      case "discord_join" /* discord_join */:
+        return thirdPartyAuth.isAuthenticated("discord" /* discord */);
+      case "twitter_connect" /* twitter_connect */:
+      case "twitter_follow" /* twitter_follow */:
+      case "twitter_like" /* twitter_like */:
+      case "twitter_reply" /* twitter_reply */:
+      case "twitter_repost" /* twitter_repost */:
+        return thirdPartyAuth.isAuthenticated("twitter" /* twitter */);
+      case "telegram_connect" /* telegram_connect */:
+      case "telegram_join" /* telegram_join */:
+        return thirdPartyAuth.isAuthenticated("telegram" /* telegram */);
+      default:
+        return true;
+    }
+  };
+  const authenticate = () => {
+    switch (task.type) {
+      case "discord_connect" /* discord_connect */:
+      case "discord_join" /* discord_join */:
+        return thirdPartyAuth.authenticate("discord" /* discord */);
+      case "twitter_connect" /* twitter_connect */:
+      case "twitter_follow" /* twitter_follow */:
+      case "twitter_like" /* twitter_like */:
+      case "twitter_reply" /* twitter_reply */:
+      case "twitter_repost" /* twitter_repost */:
+        return thirdPartyAuth.authenticate("twitter" /* twitter */);
+      case "telegram_connect" /* telegram_connect */:
+      case "telegram_join" /* telegram_join */:
+        return thirdPartyAuth.authenticate("telegram" /* telegram */);
+    }
+  };
+  const onParticipate = (body) => __async(void 0, null, function* () {
+    const resp = yield participate(task, body, onSuccess);
+    if (!resp) {
+      setLinkClicked(false);
+    }
+  });
+  const handleClick = () => {
+    if (participationDisabled || maintenance || completed) {
+      return void 0;
+    }
+    if (!isAuthenticated()) {
+      authenticate();
+    } else if (linkClicked) {
+      onParticipate();
+    } else {
+      onLinkClick();
+    }
+  };
+  const getType = () => {
+    var _a2, _b;
+    if (completed) {
+      return "COMPLETED" /* COMPLETED */;
+    }
+    if (!task.participation) {
+      return "NO_PARTICIPANT" /* NO_PARTICIPANT */;
+    }
+    if (((_a2 = task.participation) == null ? void 0 : _a2.status) === "pending" /* pending */) {
+      return "PENDING" /* PENDING */;
+    }
+    if (((_b = task.participation) == null ? void 0 : _b.status) === "failed" /* failed */) {
+      return "FAILED" /* FAILED */;
+    }
+    if (linkClicked) {
+      return "CLAIM" /* CLAIM */;
+    }
+    if (isAuthenticated()) {
+      return "START" /* START */;
+    }
+    return "AUTH_REQUIRED" /* AUTH_REQUIRED */;
+  };
+  const noOnClick = () => {
+    if (completed || maintenance || participationDisabled) {
+      return true;
+    }
+    if (task.type === "manual" /* manual */ || task.type === "twitter_activity" /* twitter_activity */) {
+      return true;
+    }
+    return false;
+  };
+  return children({
+    onClick: !noOnClick() ? handleClick : void 0,
+    type: getType(),
+    isLoading: thirdPartyAuth.isLoading || isParticipationLoading,
+    disabled: participationDisabled || maintenance,
+    comment: (_a = task.participation) == null ? void 0 : _a.comment
+  });
+};
+var TaskWrapper = (props) => {
+  const { task, participationDisabled, maintenance, errorCallback, onSuccess } = props;
+  return /* @__PURE__ */ React.createElement(TaskProvider, { errorCallback }, /* @__PURE__ */ React.createElement(ThirdPartyAuthProvider, { errorCallback }, /* @__PURE__ */ React.createElement(
+    TaskWrapperBase,
+    {
+      task,
+      participationDisabled,
+      maintenance,
+      callbacks: props.callbacks,
+      onSuccess
+    },
+    props.children
+  )));
+};
+var TaskWrapper_default = TaskWrapper;
 
 // src/models/enums/missions.enum.ts
 var MissionType = /* @__PURE__ */ ((MissionType2) => {
@@ -548,6 +802,7 @@ export {
   TaskRewardType,
   TaskType,
   TaskValidation,
+  TaskWrapper_default as TaskWrapper,
   ThirdPartyProvider,
   errorMessages,
   getCurrentHrefWithoutQueryParams,
