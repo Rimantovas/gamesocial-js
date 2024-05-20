@@ -75,7 +75,7 @@ export const useThirdPartyAuthState = (
           redirect_url: getCurrentHrefWithoutQueryParams(),
         },
       })
-      .then(function (response) {
+      .then(function (response: any) {
         if (response.data.url) {
           //check if there is an error in query params
           if (response.data.url.includes("?error=")) {
@@ -88,7 +88,7 @@ export const useThirdPartyAuthState = (
           window.location.href = response.data.url;
         }
       })
-      .catch(function (error) {
+      .catch(function (error: any) {
         console.error(error);
         errorCallback && errorCallback(error);
       })

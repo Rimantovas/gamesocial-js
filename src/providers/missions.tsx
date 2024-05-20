@@ -69,7 +69,7 @@ export const useMissionsState = (): MissionsState => {
   const getMissions = () => {
     api()
       .get("missions")
-      .then(function (response) {
+      .then(function (response: any) {
         setMissions(response.data);
       })
       .catch(function () {
@@ -87,9 +87,9 @@ export const useMissionsState = (): MissionsState => {
       .then(function (responses) {
         const validTypes = new Set(Object.values(TaskType));
         const tasks = responses
-          .map((r) => r.data)
+          .map((r: any) => r.data)
           .flat()
-          .filter((t) => validTypes.has(t.type));
+          .filter((t: any) => validTypes.has(t.type));
         setTasks(tasks);
       })
       .catch(function () {

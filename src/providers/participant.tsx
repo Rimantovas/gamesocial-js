@@ -56,7 +56,7 @@ export const useParticipantState = (
   const getParticipant = () => {
     api()
       .get(`participants/me`)
-      .then(function (response) {
+      .then(function (response: any) {
         setParticipant(response.data);
       })
       .catch(function (error: any) {

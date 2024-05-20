@@ -98,7 +98,7 @@ export const useTaskState = (
     }
     await api()
       .post(`tasks/${task.id}`, body ? data : undefined)
-      .then(function (response) {
+      .then(function (response: any) {
         updateTaskStatus(task.id, response.data.status);
         if (
           response.data.status === ParticipantTaskStatus.completed &&
@@ -111,7 +111,7 @@ export const useTaskState = (
         }
         return true;
       })
-      .catch(function (error) {
+      .catch(function (error: any) {
         handleError(error);
       })
       .finally(function () {

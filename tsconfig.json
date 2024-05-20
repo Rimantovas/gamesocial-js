@@ -1,25 +1,29 @@
 {
-    "compilerOptions": {
-      "outDir": "dist",
-      "target": "es6",
-      "lib": ["dom", "dom.iterable", "esnext"],
-      "allowJs": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "noEmit": true,
-      "esModuleInterop": true,
-      "module": "esnext",
-      "moduleResolution": "Bundler",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "jsx": "react-jsx",
-      "paths": {
-        "@/*": ["./src/*"]
-      },
-      "declaration": true,
-      "sourceMap": true,
-      "forceConsistentCasingInFileNames": true
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist/esm",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "strict": true,
+    "module": "esnext",
+    "declaration": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./src/*"]
     },
-    "include": ["./src/**/*"],
-  }
-  
+  },
+  "include": ["src"],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
+}

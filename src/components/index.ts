@@ -1,1 +1,3 @@
-export { default as TaskWrapper } from "./TaskWrapper";
+import TaskWrapper from "./TaskWrapper";
+
+export { TaskWrapper };

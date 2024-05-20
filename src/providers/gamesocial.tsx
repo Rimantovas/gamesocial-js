@@ -1,10 +1,10 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import * as React from "react";
 
-interface IConfig {
-  apiUrl: string;
+type GamesocialProps = {
+  children: any;
   apiKey: string;
-  userAuthToken: string | undefined;
-}
+  apiUrl: string;
+};
 
 type GamesocialState = {
   apiUrl: string;
@@ -13,53 +13,30 @@ type GamesocialState = {
   setAuthToken: (token: string | undefined) => void;
 };
 
-const context = createContext<GamesocialState>({
+const context = React.createContext<GamesocialState>({
   apiUrl: "",
   apiKey: "",
   authToken: undefined,
   setAuthToken: () => {},
 });
 
-export const useGamesocial = () => useContext(context);
-
-export function GamesocialProvider({
+export const GamesocialProvider: React.FC<GamesocialProps> = ({
   children,
-  state,
   apiKey,
   apiUrl,
-}: {
-  children: any;
-  state?: GamesocialState;
-  apiKey: string;
-  apiUrl: string;
-}) {
-  state ??= useGamesocialState(apiKey, apiUrl);
-  return <context.Provider value={state}>{children}</context.Provider>;
-}
+}) => {
+  const [authToken, setAuthToken] = React.useState<string | undefined>(
+    undefined
+  );
 
-export const useGamesocialState = (
-  apiKey: string,
-  apiUrl: string
-): GamesocialState => {
-  const [config, setConfig] = useState<IConfig>({
-    apiUrl: apiUrl,
-    apiKey: apiKey,
-    userAuthToken: undefined,
-  });
-
-  const authToken = config.userAuthToken;
-
-  const setAuthToken = useCallback((token: string | undefined) => {
-    setConfig((prev) => ({
-      ...prev,
-      userAuthToken: token,
-    }));
-  }, []);
-
-  return {
+  const state = {
     apiUrl,
     apiKey,
     authToken,
     setAuthToken,
   };
+
+  return <context.Provider value={state}>{children}</context.Provider>;
 };
+
+export const useGamesocial = () => React.useContext(context);

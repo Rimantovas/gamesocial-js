@@ -15,23 +15,23 @@ export const useApi = () => {
     });
 
     api.interceptors.request.use(
-      (config) => {
+      (config: any) => {
         const token = authToken;
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
-      (error) => {
+      (error: any) => {
         return Promise.reject(error);
       }
     );
 
     api.interceptors.response.use(
-      (response) => {
+      (response: any) => {
         return response;
       },
-      (error) => {
+      (error: any) => {
         if (error.response && error.response.status === 401) {
           // Ensure this runs only in the browser
           if (typeof window !== "undefined") {
