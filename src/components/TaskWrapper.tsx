@@ -20,7 +20,7 @@ import {
   useThirdPartyAuth,
 } from "@/providers/third_party_auth";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { ThirdPartyProvider } from "..";
 
 interface TaskCallbacks {
