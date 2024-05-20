@@ -96,7 +96,7 @@ export const useTaskState = (
         },
       };
     }
-    await api
+    await api()
       .post(`tasks/${task.id}`, body ? data : undefined)
       .then(function (response) {
         updateTaskStatus(task.id, response.data.status);

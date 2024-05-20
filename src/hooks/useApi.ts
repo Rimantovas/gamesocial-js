@@ -1,11 +1,10 @@
 import { useGamesocial } from "@/providers/gamesocial";
 import axios, { AxiosInstance } from "axios";
-import { useEffect, useState } from "react";
 
-export const useApi = (): AxiosInstance => {
+export const useApi = () => {
   const { authToken, apiUrl, apiKey } = useGamesocial();
 
-  const createApi = (): AxiosInstance => {
+  const api = (): AxiosInstance => {
     const api = axios.create({
       baseURL: apiUrl,
       timeout: 10000,
@@ -44,12 +43,6 @@ export const useApi = (): AxiosInstance => {
     );
     return api;
   };
-
-  const [api, setApi] = useState<AxiosInstance>(createApi());
-
-  useEffect(() => {
-    setApi(createApi());
-  }, [apiUrl, apiKey, authToken]);
 
   return api;
 };

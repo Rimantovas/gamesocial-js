@@ -51,6 +51,10 @@ export const useMissionsState = (): MissionsState => {
   const [maintenance, setMaintenance] = useState<boolean>(false);
 
   useEffect(() => {
+    getMissions();
+  }, [authToken]);
+
+  useEffect(() => {
     if (missions.length > 0) {
       getTasks(missions.map((m) => m.id));
     }
@@ -62,25 +66,23 @@ export const useMissionsState = (): MissionsState => {
     }
   }, [authToken]);
 
-  const getMissions = useCallback(() => {
-    if (api) {
-      api
-        .get("missions")
-        .then(function (response) {
-          setMissions(response.data);
-        })
-        .catch(function () {
-          setMaintenance(true);
-        })
+  const getMissions = () => {
+    api()
+      .get("missions")
+      .then(function (response) {
+        setMissions(response.data);
+      })
+      .catch(function () {
+        setMaintenance(true);
+      })
 
-        .finally(function () {
-          // always executed
-        });
-    }
-  }, [api]);
+      .finally(function () {
+        // always executed
+      });
+  };
 
   const getTasks = (missionIds: string[]) => {
-    const promises = missionIds.map((id) => api.get(`missions/${id}/tasks`));
+    const promises = missionIds.map((id) => api().get(`missions/${id}/tasks`));
     Promise.all(promises)
       .then(function (responses) {
         const validTypes = new Set(Object.values(TaskType));
@@ -109,10 +111,6 @@ export const useMissionsState = (): MissionsState => {
     },
     [tasks]
   );
-
-  useEffect(() => {
-    getMissions();
-  }, [authToken, getMissions]);
 
   return {
     missions,

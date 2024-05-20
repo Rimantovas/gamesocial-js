@@ -54,7 +54,7 @@ export const useParticipantState = (
   }, [authToken]);
 
   const getParticipant = () => {
-    api
+    api()
       .get(`participants/me`)
       .then(function (response) {
         setParticipant(response.data);

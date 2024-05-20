@@ -69,7 +69,7 @@ export const useThirdPartyAuthState = (
 
   const authenticate = (provider: ThirdPartyProvider): void => {
     setIsLoading(true);
-    api
+    api()
       .get(`auth/${provider}`, {
         params: {
           redirect_url: getCurrentHrefWithoutQueryParams(),
