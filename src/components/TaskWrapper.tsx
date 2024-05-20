@@ -20,14 +20,9 @@ import {
   useThirdPartyAuth,
 } from "@/providers/third_party_auth";
 
+import { ThirdPartyProvider } from "@/models/enums/third_party.enum";
+import { TaskCallbacks } from "@/models/interfaces/task_callbacks";
 import React, { useState } from "react";
-import { ThirdPartyProvider } from "..";
-
-interface TaskCallbacks {
-  onYoutubeView: (task: ITask, videoId: string) => Promise<number>;
-  onFileUpload: (task: ITask) => Promise<string>;
-  onSubmitString: (task: ITask) => Promise<string>;
-}
 
 type Props = {
   task: ITask;

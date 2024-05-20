@@ -141,6 +141,7 @@ interface TaskCallbacks {
     onFileUpload: (task: ITask) => Promise<string>;
     onSubmitString: (task: ITask) => Promise<string>;
 }
+
 type Props = {
     task: ITask;
     participationDisabled: boolean;
