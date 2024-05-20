@@ -23,7 +23,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && tsc-alias",
+    "build": "tsc -p tsconfig.cjs.json && tsc-alias -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
     "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\""
   },
   "devDependencies": {

@@ -50,9 +50,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useTaskState = exports.TaskProvider = exports.useTask = void 0;
 var jsx_runtime_1 = require("react/jsx-runtime");
 var react_1 = require("react");
-var useApi_1 = require("@/hooks/useApi");
-var participants_enum_1 = require("@/models/enums/participants.enum");
-var errors_1 = require("@/utils/errors");
+var useApi_1 = require("../hooks/useApi");
+var participants_enum_1 = require("../models/enums/participants.enum");
+var errors_1 = require("../utils/errors");
 var missions_1 = require("./missions");
 var participant_1 = require("./participant");
 var context = (0, react_1.createContext)({

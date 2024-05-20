@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useThirdPartyAuthState = exports.ThirdPartyAuthProvider = exports.useThirdPartyAuth = void 0;
 var jsx_runtime_1 = require("react/jsx-runtime");
-var useApi_1 = require("@/hooks/useApi");
-var third_party_enum_1 = require("@/models/enums/third_party.enum");
-var utils_1 = require("@/utils/utils");
+var useApi_1 = require("../hooks/useApi");
+var third_party_enum_1 = require("../models/enums/third_party.enum");
+var utils_1 = require("../utils/utils");
 var react_1 = require("react");
 var participant_1 = require("./participant");
 var defaultProviderStatus = Object.fromEntries(Object.values(third_party_enum_1.ThirdPartyProvider).map(function (provider) { return [provider, false]; }));

@@ -13,7 +13,7 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useMissionsState = exports.MissionsProvider = exports.useMissions = void 0;
 var jsx_runtime_1 = require("react/jsx-runtime");
-var useApi_1 = require("@/hooks/useApi");
+var useApi_1 = require("../hooks/useApi");
 var react_1 = require("react");
 var __1 = require("..");
 var gamesocial_1 = require("./gamesocial");

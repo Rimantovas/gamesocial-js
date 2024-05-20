@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useApi = void 0;
-var gamesocial_1 = require("@/providers/gamesocial");
+var gamesocial_1 = require("../providers/gamesocial");
 var axios_1 = __importDefault(require("axios"));
 var useApi = function () {
     var _a = (0, gamesocial_1.useGamesocial)(), authToken = _a.authToken, apiUrl = _a.apiUrl, apiKey = _a.apiKey;

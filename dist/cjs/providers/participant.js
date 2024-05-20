@@ -14,8 +14,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useParticipantState = exports.ParticipantProvider = exports.useParticipant = void 0;
 var jsx_runtime_1 = require("react/jsx-runtime");
 var react_1 = require("react");
-var useApi_1 = require("@/hooks/useApi");
-var task_reward_type_enum_1 = require("@/models/enums/task_reward_type.enum");
+var useApi_1 = require("../hooks/useApi");
+var task_reward_type_enum_1 = require("../models/enums/task_reward_type.enum");
 var gamesocial_1 = require("./gamesocial");
 var context = (0, react_1.createContext)({
     participant: undefined,

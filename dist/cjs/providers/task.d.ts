@@ -1,4 +1,4 @@
-import { ITask } from "@/models/interfaces/task";
+import { ITask } from "../models/interfaces/task";
 type TaskState = {
     isParticipationLoading: boolean;
     participate: (task: ITask, body?: any, callback?: any) => Promise<boolean>;

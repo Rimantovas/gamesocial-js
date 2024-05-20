@@ -37,12 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var jsx_runtime_1 = require("react/jsx-runtime");
-var participants_enum_1 = require("@/models/enums/participants.enum");
-var task_button_type_enum_1 = require("@/models/enums/task_button_type.enum");
-var tasks_enum_1 = require("@/models/enums/tasks.enum");
-var task_1 = require("@/providers/task");
-var third_party_auth_1 = require("@/providers/third_party_auth");
-var third_party_enum_1 = require("@/models/enums/third_party.enum");
+var participants_enum_1 = require("../models/enums/participants.enum");
+var task_button_type_enum_1 = require("../models/enums/task_button_type.enum");
+var tasks_enum_1 = require("../models/enums/tasks.enum");
+var task_1 = require("../providers/task");
+var third_party_auth_1 = require("../providers/third_party_auth");
+var third_party_enum_1 = require("../models/enums/third_party.enum");
 var react_1 = require("react");
 var TaskWrapperBase = function (props) {
     var _a;

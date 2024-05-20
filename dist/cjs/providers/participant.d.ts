@@ -1,4 +1,4 @@
-import { ITask } from "@/models/interfaces/task";
+import { ITask } from "../models/interfaces/task";
 import { ThirdPartyProvider } from "../models/enums/third_party.enum";
 import { IParticipant } from "../models/interfaces/participant";
 type ParticipantState = {

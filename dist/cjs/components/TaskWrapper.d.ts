@@ -1,6 +1,6 @@
-import { TaskButtonType } from "@/models/enums/task_button_type.enum";
-import { ITask } from "@/models/interfaces/task";
-import { TaskCallbacks } from "@/models/interfaces/task_callbacks";
+import { TaskButtonType } from "../models/enums/task_button_type.enum";
+import { ITask } from "../models/interfaces/task";
+import { TaskCallbacks } from "../models/interfaces/task_callbacks";
 import React from "react";
 type Props = {
     task: ITask;

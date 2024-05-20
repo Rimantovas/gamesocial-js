@@ -1,4 +1,4 @@
-import { ThirdPartyProvider } from "@/models/enums/third_party.enum";
+import { ThirdPartyProvider } from "../models/enums/third_party.enum";
 type ProviderStatus = {
     [key in ThirdPartyProvider]: boolean;
 };

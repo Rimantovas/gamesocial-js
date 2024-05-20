@@ -1,6 +1,6 @@
-import { ParticipantTaskStatus } from "@/models/enums/participants.enum";
-import { IMission } from "@/models/interfaces/mission";
-import { ITask } from "@/models/interfaces/task";
+import { ParticipantTaskStatus } from "../models/enums/participants.enum";
+import { IMission } from "../models/interfaces/mission";
+import { ITask } from "../models/interfaces/task";
 type MissionsState = {
     missions: IMission[];
     tasks: ITask[];
