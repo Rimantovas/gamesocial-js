@@ -2,7 +2,7 @@ import { useGamesocial } from "@/providers/gamesocial";
 import axios, { AxiosInstance } from "axios";
 import { useEffect, useState } from "react";
 
-export const useApi = () => {
+export const useApi = (): AxiosInstance => {
   const { authToken, apiUrl, apiKey } = useGamesocial();
 
   const createApi = (): AxiosInstance => {
@@ -34,7 +34,10 @@ export const useApi = () => {
       },
       (error) => {
         if (error.response && error.response.status === 401) {
-          localStorage.removeItem("token");
+          // Ensure this runs only in the browser
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("token");
+          }
         }
         return Promise.reject(error);
       }
