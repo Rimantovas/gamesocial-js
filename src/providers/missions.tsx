@@ -51,10 +51,6 @@ export const useMissionsState = (): MissionsState => {
   const [maintenance, setMaintenance] = useState<boolean>(false);
 
   useEffect(() => {
-    getMissions();
-  }, [authToken]);
-
-  useEffect(() => {
     if (missions.length > 0) {
       getTasks(missions.map((m) => m.id));
     }
@@ -66,20 +62,22 @@ export const useMissionsState = (): MissionsState => {
     }
   }, [authToken]);
 
-  const getMissions = () => {
-    api
-      .get("missions")
-      .then(function (response) {
-        setMissions(response.data);
-      })
-      .catch(function () {
-        setMaintenance(true);
-      })
+  const getMissions = useCallback(() => {
+    if (api) {
+      api
+        .get("missions")
+        .then(function (response) {
+          setMissions(response.data);
+        })
+        .catch(function () {
+          setMaintenance(true);
+        })
 
-      .finally(function () {
-        // always executed
-      });
-  };
+        .finally(function () {
+          // always executed
+        });
+    }
+  }, [api]);
 
   const getTasks = (missionIds: string[]) => {
     const promises = missionIds.map((id) => api.get(`missions/${id}/tasks`));
@@ -111,6 +109,10 @@ export const useMissionsState = (): MissionsState => {
     },
     [tasks]
   );
+
+  useEffect(() => {
+    getMissions();
+  }, [authToken, getMissions]);
 
   return {
     missions,
