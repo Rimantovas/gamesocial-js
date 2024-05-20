@@ -9,7 +9,7 @@
       "noEmit": true,
       "esModuleInterop": true,
       "module": "esnext",
-      "moduleResolution": "node",
+      "moduleResolution": "Bundler",
       "resolveJsonModule": true,
       "isolatedModules": true,
       "jsx": "react-jsx",
@@ -20,6 +20,6 @@
       "sourceMap": true,
       "forceConsistentCasingInFileNames": true
     },
-    "include": ["src/**/*"],
+    "include": ["./src/**/*"],
   }
   
