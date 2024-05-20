@@ -1,1 +1,1 @@
-export * from "./TaskWrapper";
+export { default as TaskWrapper } from "./TaskWrapper";
