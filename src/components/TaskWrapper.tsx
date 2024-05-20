@@ -45,7 +45,7 @@ type Props = {
   onSuccess?: () => void;
 };
 
-const TaskWrapperBase = (props: Props) => {
+const TaskWrapperBase: React.FC<Props> = (props: Props) => {
   const {
     task,
     participationDisabled,
@@ -254,7 +254,7 @@ const TaskWrapperBase = (props: Props) => {
   });
 };
 
-const TaskWrapper = (props: Props) => {
+const TaskWrapper: React.FC<Props> = (props: Props) => {
   const { task, participationDisabled, maintenance, errorCallback, onSuccess } =
     props;
   return (

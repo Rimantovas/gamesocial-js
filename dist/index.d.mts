@@ -1,5 +1,5 @@
-import * as react_jsx_runtime from 'react/jsx-runtime';
 import React from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
 
 declare enum TaskButtonType {
     NO_PARTICIPANT = "NO_PARTICIPANT",// If not participant is found. Usually that means the user is not authenticated.
@@ -156,7 +156,7 @@ type Props = {
     errorCallback?: (error: any) => void;
     onSuccess?: () => void;
 };
-declare const TaskWrapper: (props: Props) => react_jsx_runtime.JSX.Element;
+declare const TaskWrapper: React.FC<Props>;
 
 declare enum MissionType {
     guaranteed = "guaranteed",
