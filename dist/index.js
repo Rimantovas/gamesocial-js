@@ -153,6 +153,7 @@ var import_react5 = require("react");
 
 // src/providers/gamesocial.tsx
 var import_react = require("react");
+var import_jsx_runtime = require("react/jsx-runtime");
 var context = (0, import_react.createContext)({
   apiUrl: "",
   apiKey: "",
@@ -168,7 +169,7 @@ function GamesocialProvider({
   apiUrl
 }) {
   state != null ? state : state = useGamesocialState(apiKey, apiUrl);
-  return /* @__PURE__ */ React.createElement(context.Provider, { value: state }, children);
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(context.Provider, { value: state, children });
 }
 var useGamesocialState = (apiKey, apiUrl) => {
   const [config, setConfig] = (0, import_react.useState)({
@@ -270,6 +271,7 @@ var shouldRefetchParticipant = (error) => {
 
 // src/providers/missions.tsx
 var import_react3 = require("react");
+var import_jsx_runtime2 = require("react/jsx-runtime");
 var context2 = (0, import_react3.createContext)({
   missions: [],
   tasks: [],
@@ -284,7 +286,7 @@ function MissionsProvider({
   state
 }) {
   state != null ? state : state = useMissionsState();
-  return /* @__PURE__ */ React.createElement(context2.Provider, { value: state }, children);
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(context2.Provider, { value: state, children });
 }
 var useMissionsState = () => {
   const [missions, setMissions] = (0, import_react3.useState)([]);
@@ -356,6 +358,7 @@ var TaskRewardType = /* @__PURE__ */ ((TaskRewardType2) => {
 })(TaskRewardType || {});
 
 // src/providers/participant.tsx
+var import_jsx_runtime3 = require("react/jsx-runtime");
 var context3 = (0, import_react4.createContext)({
   participant: void 0,
   isThirdPartyAuthenticated: () => false,
@@ -371,7 +374,7 @@ function ParticipantProvider({
   errorCallback
 }) {
   state != null ? state : state = useParticipantState(errorCallback);
-  return /* @__PURE__ */ React.createElement(context3.Provider, { value: state }, children);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(context3.Provider, { value: state, children });
 }
 var useParticipantState = (errorCallback) => {
   const [participant, setParticipant] = (0, import_react4.useState)();
@@ -433,6 +436,7 @@ var useParticipantState = (errorCallback) => {
 };
 
 // src/providers/task.tsx
+var import_jsx_runtime4 = require("react/jsx-runtime");
 var context4 = (0, import_react5.createContext)({
   isParticipationLoading: false,
   participate: () => Promise.resolve(false)
@@ -444,7 +448,7 @@ function TaskProvider({
   errorCallback
 }) {
   state != null ? state : state = useTaskState(errorCallback);
-  return /* @__PURE__ */ React.createElement(context4.Provider, { value: state }, children);
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(context4.Provider, { value: state, children });
 }
 var useTaskState = (errorCallback) => {
   const [isParticipationLoading, setIsParticipationLoading] = (0, import_react5.useState)(false);
@@ -534,6 +538,7 @@ var getCurrentHrefWithoutQueryParams = () => {
 
 // src/providers/third_party_auth.tsx
 var import_react6 = require("react");
+var import_jsx_runtime5 = require("react/jsx-runtime");
 var defaultProviderStatus = Object.fromEntries(
   Object.values(ThirdPartyProvider).map((provider) => [provider, false])
 );
@@ -550,7 +555,7 @@ function ThirdPartyAuthProvider({
   errorCallback
 }) {
   state != null ? state : state = useThirdPartyAuthState(errorCallback);
-  return /* @__PURE__ */ React.createElement(context5.Provider, { value: state }, children);
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(context5.Provider, { value: state, children });
 }
 var useThirdPartyAuthState = (errorCallback) => {
   const [authenticated, setAuthenticated] = (0, import_react6.useState)(
@@ -603,6 +608,7 @@ var useThirdPartyAuthState = (errorCallback) => {
 
 // src/components/TaskWrapper.tsx
 var import_react7 = require("react");
+var import_jsx_runtime6 = require("react/jsx-runtime");
 var TaskWrapperBase = (props) => {
   var _a;
   const {
@@ -787,17 +793,17 @@ var TaskWrapperBase = (props) => {
 };
 var TaskWrapper = (props) => {
   const { task, participationDisabled, maintenance, errorCallback, onSuccess } = props;
-  return /* @__PURE__ */ React.createElement(TaskProvider, { errorCallback }, /* @__PURE__ */ React.createElement(ThirdPartyAuthProvider, { errorCallback }, /* @__PURE__ */ React.createElement(
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TaskProvider, { errorCallback, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(ThirdPartyAuthProvider, { errorCallback, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
     TaskWrapperBase,
     {
       task,
       participationDisabled,
       maintenance,
       callbacks: props.callbacks,
-      onSuccess
-    },
-    props.children
-  )));
+      onSuccess,
+      children: props.children
+    }
+  ) }) });
 };
 var TaskWrapper_default = TaskWrapper;
 
@@ -832,13 +838,14 @@ var TaskValidation = /* @__PURE__ */ ((TaskValidation2) => {
 })(TaskValidation || {});
 
 // src/wrappers.tsx
+var import_jsx_runtime7 = require("react/jsx-runtime");
 var QuestsProvider = ({
   children,
   apiKey,
   apiUrl,
   errorCallback
 }) => {
-  return /* @__PURE__ */ React.createElement(GamesocialProvider, { apiKey, apiUrl }, /* @__PURE__ */ React.createElement(ParticipantProvider, { errorCallback }, /* @__PURE__ */ React.createElement(MissionsProvider, null, children)));
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(GamesocialProvider, { apiKey, apiUrl, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(ParticipantProvider, { errorCallback, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(MissionsProvider, { children }) }) });
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

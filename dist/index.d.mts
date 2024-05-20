@@ -1,4 +1,4 @@
-import * as react from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
 
 declare enum TaskButtonType {
     NO_PARTICIPANT = "NO_PARTICIPANT",// If not participant is found. Usually that means the user is not authenticated.
@@ -155,7 +155,7 @@ type Props = {
     errorCallback?: (error: any) => void;
     onSuccess?: () => void;
 };
-declare const TaskWrapper: (props: Props) => react.JSX.Element;
+declare const TaskWrapper: (props: Props) => react_jsx_runtime.JSX.Element;
 
 declare enum MissionType {
     guaranteed = "guaranteed",
@@ -258,7 +258,7 @@ declare function GamesocialProvider({ children, state, apiKey, apiUrl, }: {
     state?: GamesocialState;
     apiKey: string;
     apiUrl: string;
-}): react.JSX.Element;
+}): react_jsx_runtime.JSX.Element;
 declare const useGamesocialState: (apiKey: string, apiUrl: string) => GamesocialState;
 
 type MissionsState = {
@@ -272,7 +272,7 @@ declare const useMissions: () => MissionsState;
 declare function MissionsProvider({ children, state, }: {
     children: any;
     state?: MissionsState;
-}): react.JSX.Element;
+}): react_jsx_runtime.JSX.Element;
 declare const useMissionsState: () => MissionsState;
 
 type ParticipantState = {
@@ -286,7 +286,7 @@ declare function ParticipantProvider({ children, state, errorCallback, }: {
     children: any;
     state?: ParticipantState;
     errorCallback?: (error: any) => void;
-}): react.JSX.Element;
+}): react_jsx_runtime.JSX.Element;
 declare const useParticipantState: (errorCallback?: (error: any) => void) => ParticipantState;
 
 type TaskState = {
@@ -298,7 +298,7 @@ declare function TaskProvider({ children, state, errorCallback, }: {
     children: any;
     state?: TaskState;
     errorCallback?: (error: any) => void;
-}): react.JSX.Element;
+}): react_jsx_runtime.JSX.Element;
 declare const useTaskState: (errorCallback?: (error: any) => void) => TaskState;
 
 type ErrorMessages = {
@@ -314,6 +314,6 @@ declare const QuestsProvider: ({ children, apiKey, apiUrl, errorCallback, }: {
     apiKey: string;
     apiUrl: string;
     errorCallback?: (error: any) => void;
-}) => react.JSX.Element;
+}) => react_jsx_runtime.JSX.Element;
 
 export { type BaseMetadata, type ErrorMessages, GamesocialProvider, type ICryptoRewardMetadata, type IDiscordJoinMetadata, type IImageUploadMetadata, type IManualMetadata, type IMission, type IMissionParticipation, type IMissionReward, type IOpenUrlMetadata, type IParticipant, type IParticipantTask, type IParticipation, type IPointsRewardMetadata, type ISubmitStringMetadata, type ITask, type ITelegramJoinMetadata, type ITwitchFollowMetadata, type ITwitterActivityMetadata, type ITwitterFollowMetadata, type ITwitterLikeMetadata, type ITwitterReplyMetadata, type ITwitterRepostMetadata, type IYoutubeSubscribeMetadata, type IYoutubeViewMetadata, MissionRewardType, MissionType, MissionsProvider, ParticipantMissionStatus, ParticipantProvider, ParticipantTaskStatus, QuestWebhookType, QuestsProvider, TaskButtonType, TaskProvider, TaskRewardType, TaskType, TaskValidation, TaskWrapper, ThirdPartyProvider, errorMessages, getCurrentHrefWithoutQueryParams, shouldRefetchParticipant, useGamesocial, useGamesocialState, useMissions, useMissionsState, useParticipant, useParticipantState, useTask, useTaskState };
